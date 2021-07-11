@@ -1,7 +1,7 @@
 ---
 name: Add documentation
 about: Create a request documentation to be added
-title: ''
+title: 'Brief overview of where documentation is needed'
 labels: documentation
 assignees: ''
 
