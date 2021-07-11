@@ -27,4 +27,26 @@ export class Index {
         await this.login();
     }
 
+    //Login function
+    static async login(): Promise<void> {
+        console.log("[RUN] Login function");
+        try {
+            await this.client.login(
+                process.env.TOKEN,
+                //If there is an error with the token, it will catch the error and stop here and not run the ready function.
+                `${__dirname}/components/*.ts`, // Directory route as string to load classes in npm run start
+                `${__dirname}/components/*.js` // If you compile your bot, the file extension will be .js
+            );
+
+            await this.client.once("ready", async () => {
+                //Called if login was successful.
+
+            })
+        } catch (e) {
+            return console.error(e);
+        }
+        return;
+    }
 }
+
+Index.start();
