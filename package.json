@@ -4,7 +4,9 @@
   "description": "A example discord bot written in typescript using Prisma for database control & discord.js/ts library.",
   "main": "main.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:bot": "ts-node ./src/index.ts",
+    "lint": "eslint . --ext .ts --fix"
   },
   "repository": {
     "type": "git",
