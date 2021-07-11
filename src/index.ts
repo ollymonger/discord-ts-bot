@@ -92,6 +92,7 @@ export class Index {
     static async initialiseGuilds(): Promise<void> {
         console.log(`[INFO] Initialising guilds`)
         try { await this.getBotGuilds(); } catch (e) { console.error(e) }
+        try { await this.client.clearSlashes(); } catch (e) { console.error(e) }
 
         await this.inGuilds.map(async guild => {
             try {
