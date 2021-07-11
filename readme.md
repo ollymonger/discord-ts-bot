@@ -4,6 +4,10 @@
 
 Thanks for checking this project out. Feel free to use this, however please leave the credits section in.
 
+#### .env example
+A `.env` file must be provided in the `src` folder with the keys:
+- TOKEN=TOKENLONGSTRINGHERE
+
 
 #### Available scripts
 - `npm run start:bot` - Starts the bot: connects through discord api using login info provided from a `.env` file.
