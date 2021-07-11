@@ -7,3 +7,7 @@ Thanks for checking this project out. Feel free to use this, however please leav
 
 #### Available scripts
 - `npm run start:bot` - Starts the bot: connects through discord api using login info provided from a `.env` file.
+
+#### Thanks to
+- discord.ts(by /OwenCalvin): `https://github.com/OwenCalvin/discord.ts`
+- Prisma: `https://github.com/prisma`
