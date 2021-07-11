@@ -40,11 +40,17 @@ export class Index {
 
             await this.client.once("ready", async () => {
                 //Called if login was successful.
-
+                this.onReady();
             })
         } catch (e) {
             return console.error(e);
         }
+        return;
+    }
+
+    //OnReady function
+    static async onReady(): Promise<void> {
+        console.log(`[I] Bot client is ready & logged in!`);
         return;
     }
 }
