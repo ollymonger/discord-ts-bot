@@ -90,17 +90,17 @@ export class Index {
     }
 
     static async initialiseGuilds(): Promise<void> {
-        console.log(`[INFO] Initialising guilds`)
+        console.log(`[I] Initialising guilds`)
         try { await this.getBotGuilds(); } catch (e) { console.error(e) }
         try { await this.client.clearSlashes(); } catch (e) { console.error(e) }
 
         await this.inGuilds.map(async guild => {
             try {
-                console.log(`[INFO] Clearing guild slashes on: ${guild.guildId}`)
+                console.log(`[I] Clearing guild slashes on: ${guild.guildId}`)
                 await this.client.clearSlashes(guild.guildId);
-                console.log(`[!INFO!] Cleared guild slashes on: ${guild.guildId}`);
+                console.log(`[R] Cleared guild slashes on: ${guild.guildId}`);
             } catch (e) {
-                console.error(`[ERROR] ${e.message}`);
+                console.error(`[E] ${e.message}`);
                 return;
             }
         });
