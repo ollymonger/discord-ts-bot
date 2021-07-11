@@ -68,6 +68,7 @@ export class Index {
         return;
     }
 
+    //getBotGuilds function
     static async getBotGuilds(): Promise<void> {
         console.log(`[I] Updating Guild array`);
         // Ensure that Guild array is empty.
@@ -85,6 +86,25 @@ export class Index {
             this.inGuilds.push(new ExtendedGuild(newGuild));
         });
 
+        return;
+    }
+
+    static async initialiseGuilds(): Promise<void> {
+        console.log(`[INFO] Initialising guilds`)
+        try { await this.getBotGuilds(); } catch (e) { console.error(e) }
+
+        await this.inGuilds.map(async guild => {
+            try {
+                console.log(`[INFO] Clearing guild slashes on: ${guild.guildId}`)
+                await this.client.clearSlashes(guild.guildId);
+                console.log(`[!INFO!] Cleared guild slashes on: ${guild.guildId}`);
+            } catch (e) {
+                console.error(`[ERROR] ${e.message}`);
+                return;
+            }
+        });
+
+        await this.client.initSlashes();
         return;
     }
 }
