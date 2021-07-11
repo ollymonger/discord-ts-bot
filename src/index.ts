@@ -60,7 +60,7 @@ export class Index {
         console.log(`[I] Bot client is ready & logged in!`);
         // Try catch to get the botGuilds & log error if error
         try {
-            await this.getBotGuilds();
+            await this.initialiseGuilds();
         } catch (e) {
             console.error(e.message);
             return;
