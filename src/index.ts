@@ -2,6 +2,8 @@ import "reflect-metadata";
 import { Client } from "@typeit/discord";
 import { Intents } from "discord.js";
 
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname + '/.env' });
 
 export class Index {
     // Initialise client
@@ -29,7 +31,7 @@ export class Index {
 
     //Login function
     static async login(): Promise<void> {
-        console.log("[RUN] Login function");
+        console.log("[R] Login function");
         try {
             await this.client.login(
                 process.env.TOKEN,
