@@ -1,7 +1,7 @@
-import { Role } from "@typeit/discord/node_modules/discord.js";
+import { Role } from "discord.js";
 
 export interface ExtendedGuildType {
     guildId: `${bigint}`;
-    guildName: string
+    guildName: string;
     guildRoles: Array<Role>;
 }
