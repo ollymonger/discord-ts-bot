@@ -12,6 +12,9 @@ A `.env` file must be provided in the `src` folder with the keys:
 #### Available scripts
 - `npm run start:bot` - Starts the bot: connects through discord api using login info provided from a `.env` file.
 
+#### Help and support
+`https://discord.gg/fUutRr4C` - join our discord.
+
 #### Thanks to
 - discord.ts(by /OwenCalvin): `https://github.com/OwenCalvin/discord.ts`
 - Prisma: `https://github.com/prisma`
