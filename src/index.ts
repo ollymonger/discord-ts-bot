@@ -110,6 +110,12 @@ export class Index {
         await this.client.initSlashes();
         return;
     }
+
+    static async updateStatus(): Promise<void> {
+        this.client.user.setPresence({ status: "online" });
+        this.client.user.setActivity({ name: `on ${this.inGuilds.length} servers!`, type: "PLAYING" });
+        return console.log("[I] Updated bot activty message.");
+    }
 }
 
 Index.start();

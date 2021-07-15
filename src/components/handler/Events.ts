@@ -9,7 +9,7 @@ export abstract class Events {
     @On("guildCreate")
     async join(guild: GuildType): Promise<void> {
         try {
-            await onJoin(guild);
+            await onJoin(guild[0]);
         } catch (e) {
             return console.log(e.message);
         }

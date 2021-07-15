@@ -1,15 +1,19 @@
 import { PrismaClient } from "@prisma/client";
+import { Role } from "discord.js";
 import { Index } from "../..";
 import { ExtendedGuild } from "../ExtendedGuild";
 import { GuildType } from "../models/GuildType";
 
+import * as JSONBigint from 'json-bigint';
+
 const prisma = new PrismaClient();
 
 export async function onJoin(guild: GuildType) {
-    console.log(`[I] Bot join guild: ${guild[0].id}`);
+    console.log(guild);
+
     const query = await prisma.guilds.findFirst({
         where: {
-            guildId: guild[0].id
+            guildId: guild.id
         }
     })
 
@@ -19,22 +23,25 @@ export async function onJoin(guild: GuildType) {
     }
 
     console.log("[I] Guild does not exist in database.");
-    let newGuild = new ExtendedGuild({ guildId: guild[0].id, guildName: guild[0].name, guildRoles: guild[0].guildRoles });
+    let roles = await guild.roles.cache.map(r => r);
 
+    let newGuild = new ExtendedGuild({ guildId: guild.id, guildName: guild.name, guildRoles: roles });
     const insert = async (): Promise<void> => {
         try {
             await prisma.guilds.create({
                 data: {
                     guildId: newGuild.guildId,
                     guildName: newGuild.guildName,
-                    guildRoles: newGuild.guildRoles.toString()
+                    guildRoles: JSONBigint.stringify(newGuild.guildRoles)
                 }
             })
             await Index.inGuilds.push({
-                guildId: this.guildId,
-                guildName: this.guildName,
-                guildRoles: this.guildRoles
+                guildId: newGuild.guildId,
+                guildName: newGuild.guildName,
+                guildRoles: newGuild.guildRoles
             });
+            await console.log("[R] Inserted guild to database");
+            await Index.updateStatus();
             return;
         } catch (e) {
             console.error(e.message);

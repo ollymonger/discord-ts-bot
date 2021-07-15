@@ -1,5 +1,4 @@
 import { Guild } from "discord.js";
 
-export interface GuildType {
-    guild: Guild
+export interface GuildType extends Guild {
 }
