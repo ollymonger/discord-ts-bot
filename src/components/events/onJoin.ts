@@ -9,8 +9,6 @@ import * as JSONBigint from 'json-bigint';
 const prisma = new PrismaClient();
 
 export async function onJoin(guild: GuildType) {
-    console.log(guild);
-
     const query = await prisma.guilds.findFirst({
         where: {
             guildId: guild.id
@@ -40,7 +38,7 @@ export async function onJoin(guild: GuildType) {
                     where: {
                         guildId: joinedGuild.guildId
                     },
-                    data: { guildName: joinedGuild.guildName, guildRoles: JSONBigint.stringify(joinedGuild.guildRoles) }
+                    data: { guildName: joinedGuild.guildName, guildRoles: JSONBigint.stringify(joinedGuild.guildRoles), updatedAt: new Date() }
                 });
                 await Index.inGuilds.push({
                     guildId: joinedGuild.guildId,

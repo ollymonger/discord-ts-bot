@@ -11,8 +11,10 @@ generator client {
 }
 
 model Guilds {
-  id         Int    @id @default(autoincrement())
-  guildId    String @unique
+  id         Int      @id @default(autoincrement())
+  guildId    String   @unique
   guildName  String
-  guildRoles String @db.LongText
+  guildRoles String   @db.LongText
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
 }
