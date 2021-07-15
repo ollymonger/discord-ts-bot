@@ -17,6 +17,7 @@ export async function onJoin(guild: GuildType) {
         }
     })
 
+    // Check to see whether query returns an object 
     if (query !== null) {
         // Guild already exists
         console.log("[I] Guild does exist in database.");
@@ -39,7 +40,7 @@ export async function onJoin(guild: GuildType) {
                     where: {
                         guildId: joinedGuild.guildId
                     },
-                    data: { guildRoles: JSONBigint.stringify(joinedGuild.guildRoles) }
+                    data: { guildName: joinedGuild.guildName, guildRoles: JSONBigint.stringify(joinedGuild.guildRoles) }
                 });
                 await Index.inGuilds.push({
                     guildId: joinedGuild.guildId,
@@ -67,6 +68,7 @@ export async function onJoin(guild: GuildType) {
         return;
     }
 
+    // Query is null
     console.log("[I] Guild does not exist in database.");
     let roles = await guild.roles.cache.map(r => r);
 
