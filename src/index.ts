@@ -106,7 +106,7 @@ export class Index {
                 return;
             }
         });
-
+        await this.updateStatus();
         await this.client.initSlashes();
         return;
     }

@@ -19,6 +19,51 @@ export async function onJoin(guild: GuildType) {
 
     if (query !== null) {
         // Guild already exists
+        console.log("[I] Guild does exist in database.");
+        // check to see if there is difference between cache/database & update DB if needed
+        let roles = await guild.roles.cache.map(r => r);
+        let joinedGuild = new ExtendedGuild({ guildId: guild.id, guildName: guild.name, guildRoles: roles });
+        let detectChange = 0; // not detected change
+        if (joinedGuild.guildName !== query.guildName) {
+            detectChange = 1;
+        }
+        if (JSONBigint.stringify(joinedGuild.guildRoles) !== query.guildRoles) {
+            detectChange = 1;
+        }
+
+        if (detectChange === 1) {
+            // update DB
+            console.log("[R] Change detected, updating DB and ExtendedGuild array");
+            try {
+                await prisma.guilds.update({
+                    where: {
+                        guildId: joinedGuild.guildId
+                    },
+                    data: { guildRoles: JSONBigint.stringify(joinedGuild.guildRoles) }
+                });
+                await Index.inGuilds.push({
+                    guildId: joinedGuild.guildId,
+                    guildName: joinedGuild.guildName,
+                    guildRoles: joinedGuild.guildRoles
+                });
+                await Index.updateStatus();
+            } catch (e) {
+                console.error(e.message);
+            }
+            return;
+        }
+
+        console.log("[R] No change detected, adding Guild to ExtendedGuild array");
+        try {
+            await Index.inGuilds.push({
+                guildId: joinedGuild.guildId,
+                guildName: joinedGuild.guildName,
+                guildRoles: joinedGuild.guildRoles
+            });
+            await Index.updateStatus();
+        } catch (e) {
+            console.error(e.message);
+        }
         return;
     }
 
