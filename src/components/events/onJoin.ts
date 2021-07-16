@@ -17,7 +17,6 @@ export async function onJoin(guild: GuildType) {
     if (query !== null) {
         // Guild already exists
         console.log("[I] Guild does exist in database.");
-        // check to see if there is difference between cache/database & update DB if needed
         let roles = await guild.roles.cache.map(r => r);
         let joinedGuild = new ExtendedGuild({ guildId: guild.id, guildName: guild.name, guildRoles: roles });
 
