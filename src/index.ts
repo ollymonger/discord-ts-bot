@@ -42,6 +42,8 @@ export class Index {
                 process.env.TOKEN,
                 //If there is an error with the token, it will catch the error and stop here and not run the ready function.
                 `${__dirname}/components/*.ts`, // Directory route as string to load classes in npm run start
+                `${__dirname}/components/*/*.ts`, // Directory route as string to load classes in npm run start
+                `${__dirname}/components/*/*.js`, // If you compile your bot, the file extension will be .js
                 `${__dirname}/components/*.js` // If you compile your bot, the file extension will be .js
             );
 
@@ -104,9 +106,15 @@ export class Index {
                 return;
             }
         });
-
+        await this.updateStatus();
         await this.client.initSlashes();
         return;
+    }
+
+    static async updateStatus(): Promise<void> {
+        this.client.user.setPresence({ status: "online" });
+        this.client.user.setActivity({ name: `on ${this.inGuilds.length} servers!`, type: "PLAYING" });
+        return console.log("[I] Updated bot activty message.");
     }
 }
 

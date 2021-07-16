@@ -3,7 +3,7 @@ import { ExtendedGuildType } from "./models/ExtendedGuildType";
 
 
 export class ExtendedGuild {
-    public readonly guildId: `${bigint}`;
+    public readonly guildId: string;
     public readonly guildName: string;
     public readonly guildRoles: Array<Role>;
 

@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Guilds {
+  guildId    String       @unique
+  guildName  String
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @default(now())
+  GuildRoles GuildRoles[]
+}
+
+model GuildRoles {
+  roleid           String   @unique
+  guildId          String
+  name             String
+  color            Int
+  hoist            Boolean
+  rawPosition      Int
+  permissions      BigInt
+  managed          Boolean
+  mentionable      Boolean
+  deleted          Boolean
+  tags             String
+  createdTimestamp DateTime
+  guild            Guilds   @relation(fields: [guildId], references: [guildId])
+}
