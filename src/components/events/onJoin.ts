@@ -4,8 +4,6 @@ import { Index } from "../..";
 import { ExtendedGuild } from "../ExtendedGuild";
 import { GuildType } from "../models/GuildType";
 
-import * as JSONBigint from 'json-bigint';
-
 const prisma = new PrismaClient();
 
 export async function onJoin(guild: GuildType) {
@@ -22,38 +20,35 @@ export async function onJoin(guild: GuildType) {
         // check to see if there is difference between cache/database & update DB if needed
         let roles = await guild.roles.cache.map(r => r);
         let joinedGuild = new ExtendedGuild({ guildId: guild.id, guildName: guild.name, guildRoles: roles });
-        let detectChange = 0; // not detected change
-        if (joinedGuild.guildName !== query.guildName) {
-            detectChange = 1;
-        }
-        if (JSONBigint.stringify(joinedGuild.guildRoles) !== query.guildRoles) {
-            detectChange = 1;
-        }
 
-        if (detectChange === 1) {
-            // update DB
-            console.log("[R] Change detected, updating DB and ExtendedGuild array");
-            try {
-                await prisma.guilds.update({
-                    where: {
-                        guildId: joinedGuild.guildId
-                    },
-                    data: { guildName: joinedGuild.guildName, guildRoles: JSONBigint.stringify(joinedGuild.guildRoles), updatedAt: new Date() }
-                });
-                await Index.inGuilds.push({
-                    guildId: joinedGuild.guildId,
-                    guildName: joinedGuild.guildName,
-                    guildRoles: joinedGuild.guildRoles
-                });
-                await Index.updateStatus();
-            } catch (e) {
-                console.error(e.message);
-            }
-            return;
-        }
-
-        console.log("[R] No change detected, adding Guild to ExtendedGuild array");
         try {
+            await prisma.guilds.update({
+                where: {
+                    guildId: joinedGuild.guildId
+                },
+                data: { guildName: joinedGuild.guildName, updatedAt: new Date() }
+            });
+            await prisma.guildRoles.deleteMany({
+                where: { guildId: joinedGuild.guildId }
+            });
+            await joinedGuild.guildRoles.map(async r => {
+                await prisma.guildRoles.create({
+                    data: {
+                        roleid: r.id,
+                        guildId: r.guild.id,
+                        name: r.name,
+                        color: r.color,
+                        hoist: r.hoist,
+                        rawPosition: r.rawPosition,
+                        permissions: r.permissions.bitfield,
+                        managed: r.managed,
+                        mentionable: r.mentionable,
+                        deleted: r.deleted,
+                        tags: JSON.stringify(r.tags),
+                        createdTimestamp: r.createdAt
+                    }
+                });
+            })
             await Index.inGuilds.push({
                 guildId: joinedGuild.guildId,
                 guildName: joinedGuild.guildName,
@@ -76,9 +71,28 @@ export async function onJoin(guild: GuildType) {
             await prisma.guilds.create({
                 data: {
                     guildId: newGuild.guildId,
-                    guildName: newGuild.guildName,
-                    guildRoles: JSONBigint.stringify(newGuild.guildRoles)
+                    guildName: newGuild.guildName
                 }
+            })
+            await newGuild.guildRoles.map(async r => {
+                try {
+                    await prisma.guildRoles.create({
+                        data: {
+                            roleid: r.id,
+                            guildId: r.guild.id,
+                            name: r.name,
+                            color: r.color,
+                            hoist: r.hoist,
+                            rawPosition: r.rawPosition,
+                            permissions: r.permissions.bitfield,
+                            managed: r.managed,
+                            mentionable: r.mentionable,
+                            deleted: r.deleted,
+                            tags: JSON.stringify(r.tags),
+                            createdTimestamp: r.createdAt
+                        }
+                    })
+                } catch (e) { console.error(e.message) }
             })
             await Index.inGuilds.push({
                 guildId: newGuild.guildId,
