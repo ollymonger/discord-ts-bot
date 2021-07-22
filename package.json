@@ -33,7 +33,9 @@
     "discord.js": "git+https://github.com/discordjs/discord.js.git",
     "dotenv": "^10.0.0",
     "eslint": "^7.30.0",
-    "json-bigint": "^1.0.0"
+    "json-bigint": "^1.0.0",
+    "nodehun": "^3.0.2",
+    "simple-spellchecker": "^1.0.2"
   },
   "devDependencies": {
     "prisma": "^2.26.0",
