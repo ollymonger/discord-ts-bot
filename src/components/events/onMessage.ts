@@ -32,7 +32,7 @@ export async function onMessage(message: ArgsOf<"message">, client: Client) {
                 embed[0].setDescription("Loading...");
                 let data = { type: 1, label: "hi" }
                 let component: MessageActionRow = new MessageActionRow();
-                component.addComponents({ type: "BUTTON", style: "SECONDARY", customId: `issue-${message[0].author}`, label: "Report an issue" });
+                component.addComponents({ type: "BUTTON", style: "SECONDARY", customId: `${message[0].author}`, label: "Report an issue" });
                 let reply = await message[0].channel.send({ embeds: embed, components: [component] });
 
 
