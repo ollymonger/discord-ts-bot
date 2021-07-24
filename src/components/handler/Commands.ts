@@ -14,14 +14,22 @@ export abstract class Commands {
             let check = await prisma.wordVote.findFirst({
                 where: {
                     createdAt: {
-                        lt: new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000))
+                        gte: new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000))
                     },
                     word: word
                 }
             });
 
             if (check === null) {
-                interaction.reply(`Word: ${word} does not exist`);
+                await prisma.wordVote.create({
+                    data: {
+                        word: word,
+                        byGuild: interaction.guildId,
+                        votesFor: 1,
+                        votesAgainst: 0
+                    }
+                })
+                await interaction.reply(`Word: ${word} does not exist`);
                 return;
             }
             // Send embed with information like: Word, createdonguild, total votes for and against
