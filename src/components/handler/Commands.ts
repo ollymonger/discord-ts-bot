@@ -1,13 +1,34 @@
+import { PrismaClient } from "@prisma/client";
 import { Discord, Guild, Option, Slash } from "@typeit/discord";
 import { CommandInteraction } from "discord.js";
 
+const prisma = new PrismaClient();
+
 @Discord()
 @Guild()
-abstract class Commands {
+export abstract class Commands {
     @Slash("addword")
     async addword(@Option("word") word: string, interaction: CommandInteraction) {
         try {
-            await interaction.reply(word);
+            const date = new Date();
+            let check = await prisma.wordVote.findFirst({
+                where: {
+                    createdAt: {
+                        lt: new Date(date.getTime() - (7 * 24 * 60 * 60 * 1000))
+                    },
+                    word: word
+                }
+            });
+
+            if (check === null) {
+                interaction.reply(`Word: ${word} does not exist`);
+                return;
+            }
+            // Send embed with information like: Word, createdonguild, total votes for and against
+            // send buttons to vote for, or against
+
+            interaction.reply(`${check.word} was created on guild: ${check.byGuild}`);
+            return;
         } catch (e) {
             console.error(e.message);
         }
