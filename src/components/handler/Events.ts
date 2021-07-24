@@ -1,8 +1,8 @@
-import { Discord, On, Guild, Client, ArgsOf, Slash, Option } from "@typeit/discord";
+import { Discord, On, Guild, Client, ArgsOf } from "@typeit/discord";
 import { GuildType } from "../models/GuildType";
 import { onJoin } from '../events/onJoin';
 import { onMessage } from "../events/onMessage";
-import { CommandInteraction } from "discord.js";
+import { Index } from "../..";
 
 @Discord()
 @Guild()
@@ -32,16 +32,20 @@ export abstract class Events {
     }
 
     @On("interactionCreate")
-    async onclick(click: ArgsOf<"interactionCreate">, client: Client): Promise<void> {
-        if (click[0].type === "MESSAGE_COMPONENT") {
+    async onclick(interaction: ArgsOf<"interactionCreate">, client: Client): Promise<void> {
+        if (interaction[0].type === "MESSAGE_COMPONENT") {
             try {
-                let dm = await click[0].user.createDM();
+                let dm = await interaction[0].user.createDM();
                 dm.send(`**Ollbot Issue Reporter**\nPlease leave a detailed report of the error you've experienced.
             \nFor example:\n`+ '`' + `Issue: Word unavailable.\nWord attempted: exampleword` + '`');
             } catch (e) {
                 return console.log(e.message);
             }
+        }
 
+        if (interaction[0].type === "APPLICATION_COMMAND") {
+            Index.client.executeSlash(interaction[0]);
+            return;
         }
     }
 }

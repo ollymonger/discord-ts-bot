@@ -1,12 +1,15 @@
 import { Discord, Guild, Option, Slash } from "@typeit/discord";
-import { CommandInteraction } from "@typeit/discord/node_modules/discord.js";
-
+import { CommandInteraction } from "discord.js";
 
 @Discord()
 @Guild()
-export abstract class Commands {
+abstract class Commands {
     @Slash("addword")
     async addword(@Option("word") word: string, interaction: CommandInteraction) {
-        console.log(word);
+        try {
+            await interaction.reply(word);
+        } catch (e) {
+            console.error(e.message);
+        }
     }
 }
