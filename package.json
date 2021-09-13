@@ -25,6 +25,8 @@
   },
   "homepage": "https://github.com/ollymonger/dis-ts-bot#readme",
   "dependencies": {
+    "prisma": "^2.26.0",
+    "reflect-metadata": "^0.1.13",
     "@prisma/client": "^2.26.0",
     "@typeit/discord": "^5.0.13",
     "@types/dotenv": "^8.2.0",
@@ -39,7 +41,6 @@
   },
   "devDependencies": {
     "prisma": "^2.26.0",
-    "reflect-metadata": "^0.1.13",
     "ts-node": "^10.1.0",
     "tslib": "^2.3.0",
     "typescript": "^4.3.5"
